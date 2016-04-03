@@ -1,5 +1,10 @@
 import express from 'express';
 import nunjucks from 'nunjucks';
+import {argv} from 'yargs';
+import {createReadStream} from 'fs';
+import {resolve} from 'path';
+import {parse} from 'csv';
+import untildify from 'untildify';
 
 const app = express();
 
@@ -28,10 +33,54 @@ nunjucks.configure(`${__dirname}/views`, {
     express: app
 });
 
+////
+// Routes
+////
+
 app.get('/', (req, res) => {
     res.render("index.html");
 });
 
-app.listen(3000, () => {
-    console.log('Example app listening on port 3000!');
+const tickets = {
+    data: null,
+    loaded: false
+};
+
+const formatTicket = ticket => {
+    return {
+        id: ticket['Ticket Reference'],
+        lastName: ticket['Ticket Last Name'],
+        firstName: ticket['Ticket First Name'],
+        company: ticket['Ticket Company Name'],
+        type: ticket['Ticket'],
+        shirtSize: ticket['T-Shirt Size?'],
+        checkedIn: false
+    };
+};
+
+const parser = parse({columns: true}, function(err, data){
+    tickets.data = data.map(ticket => formatTicket(ticket));
+    tickets.data.sort((a, b) => {
+        if (a.lastName < b.lastName) {
+            return -1;
+        } else if (a.lastName > b.lastName) {
+            return 1;
+        } else if (a.firstName < b.firstName) {
+            return -1;
+        } else if (a.firstName > b.firstName) {
+            return 1;
+        } else {
+            return 0;
+        }
+    });
+    tickets.loaded = true;
+    console.log("Loaded Ticket Data...");
 });
+
+createReadStream(resolve(untildify(argv.csv))).pipe(parser);
+
+app.get('/api/tickets', (req, res) => {
+    res.json(tickets.data);
+});
+
+export default app;

@@ -9,4 +9,16 @@ require('babel-register')({
 //Required to support babel's inline sourcemaps
 require("source-map-support").install();
 
-require('./src/server');
+var app = require('./src/server').default;
+
+if (process.env.NODE_ENV == 'production') {
+    require('dns').lookup(require('os').hostname(), function (err, add, fam) {
+        app.listen(80, '0.0.0.0', () => {
+            console.log('Listening at ' + add);
+        });
+    });
+} else {
+    app.listen(3000, () => {
+        console.log('Listening on port 3000!');
+    });
+}

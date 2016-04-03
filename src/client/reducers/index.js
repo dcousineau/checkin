@@ -1,10 +1,10 @@
 import { routerReducer as routing } from 'react-router-redux';
 import { combineReducers } from 'redux';
 
-// import counter from './counter';
+import tickets from './tickets';
 
 const rootReducer = combineReducers({
-    // counter,
+    tickets,
     routing
 });
 
