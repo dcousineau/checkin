@@ -1,13 +1,12 @@
+//Required to support babel's inline sourcemaps
+require("source-map-support").install();
 require('babel-register')({
     //See: https://babeljs.io/docs/usage/options/#options
     ignore: /node_modules/,
     presets: ['modern-node/5.9'],
-    sourceMaps: 'inline',
+    sourceMaps: 'both',
     babelrc: false //Do not use babelrc
 });
-
-//Required to support babel's inline sourcemaps
-require("source-map-support").install();
 
 var app = require('./src/server').default;
 

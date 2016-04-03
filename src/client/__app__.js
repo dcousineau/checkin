@@ -7,8 +7,10 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import initializeStore from './store';
 
-import Home from './pages/home';
 import Layout from './pages/layout';
+import Home from './pages/home';
+import PageNotFound from './pages/pagenotfound';
+import Admin from './pages/admin';
 
 injectTapEventPlugin();
 
@@ -21,6 +23,8 @@ ReactDOM.render(
         <Router history={history}>
             <Route path="/" component={Layout}>
                 <IndexRoute component={Home} />
+                <Route path="admin" component={Admin} />
+                <Route path="*" component={PageNotFound} />
             </Route>
         </Router>
     </Provider>,

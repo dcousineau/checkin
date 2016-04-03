@@ -1,13 +1,36 @@
-import {REQUEST_TICKETS, RECEIVE_TICKETS, REQUEST_TICKETS_FAIL} from '../constants/tickets';
+import * as tickets from '../constants/tickets';
 
 export function requestTickets() {
-    return {type: REQUEST_TICKETS, payload: null};
+    return {type: tickets.REQUEST_TICKETS, payload: null};
 }
 
 export function receiveTickets(payload) {
-    return {type: RECEIVE_TICKETS, payload};
+    return {type: tickets.RECEIVE_TICKETS, payload};
 }
 
 export function requestTicketsFail(error) {
-    return {type: REQUEST_TICKETS_FAIL, payload: error, error: true};
+    return {type: tickets.REQUEST_TICKETS_FAIL, payload: error, error: true};
+}
+
+export function uploadTickets(files) {
+    return {type: tickets.UPLOAD_TICKETS, payload: files};
+}
+
+export function uploadTicketsSuccess(count) {
+    return {type: tickets.UPLOAD_TICKETS_SUCCESS, payload: count};
+}
+export function uploadTicketsFail(error) {
+    return {type: tickets.UPLOAD_TICKETS_FAIL, payload: error, error: true};
+}
+
+export function requestStats() {
+    return {type: tickets.REQUEST_STATS, payload: null};
+}
+
+export function receiveStats(payload) {
+    return {type: tickets.RECEIVE_STATS, payload};
+}
+
+export function requestStatsFail(error) {
+    return {type: tickets.REQUEST_STATS_FAIL, payload: error, error: true};
 }
