@@ -1,5 +1,7 @@
+import express from 'express';
+
 export default app => {
-    if (process.env.NODE_ENV === "development") {
+    if (process.env.NODE_ENV !== "production") {
         const webpack = require('webpack');
         const webpackConfig = require('../../../webpack.config.dev.js');
         const compiler = webpack(webpackConfig);
@@ -9,6 +11,6 @@ export default app => {
         app.use(require("webpack-hot-middleware")(compiler));
     } else {
         //@TODO: point to built static path...
-        app.use('/static', express.static(`${__dirname}/../static/`));
+        app.use('/static', express.static(`${__dirname}/../../../build/static/`));
     }
 };

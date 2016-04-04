@@ -15,7 +15,7 @@ import TicketList from '../components/ticket-list';
 
 class Home extends React.Component {
     state = {
-        filter: null,
+        filter: 'missing',
         selectedTicket: null
     };
 
@@ -33,7 +33,21 @@ class Home extends React.Component {
     };
 
     filterTickets() {
-        return this.props.tickets.data.filter(ticket => ticket.checkedIn === false);
+        let filterFunc = ticket => true;
+        switch (this.state.filter) {
+            case 'missing':
+                filterFunc = ticket => ticket.checkedIn == false;
+                break;
+            case 'checkedin':
+                filterFunc = ticket => ticket.checkedIn == true;
+                break;
+            case 'all':
+            default:
+                break;
+
+        }
+
+        return this.props.tickets.data.filter(filterFunc);
     }
 
     confirmCheckInTicket(ticket) {
@@ -84,15 +98,15 @@ class Home extends React.Component {
     render() {
         return (
             <div>
-                {/*<Toolbar>
+                <Toolbar>
                     <ToolbarGroup firstChild={true} float="left">
-                        <DropDownMenu value={1}>
-                            <MenuItem value={1} primaryText="All Attendees" />
-                            <MenuItem value={2} primaryText="Not Checked In" />
-                            <MenuItem value={3} primaryText="Checked In" />
+                        <DropDownMenu onChange={(event, index, filter) => this.setState({filter})} value={this.state.filter}>
+                            <MenuItem value={'all'} primaryText="All Attendees" />
+                            <MenuItem value={'missing'} primaryText="Not Checked In" />
+                            <MenuItem value={'checkedin'} primaryText="Checked In" />
                         </DropDownMenu>
                     </ToolbarGroup>
-                </Toolbar>*/}
+                </Toolbar>
                 <TicketList tickets={this.filterTickets()}
                             onSelectTicket={this.onSelectTicket} />
                 {this.generateCheckInDialog()}

@@ -6,11 +6,10 @@ module.exports = {
     name: 'app',
     devtool: 'source-map', //devtool: 'eval' for maximum build performance
     entry: {
-        vendors: ['webpack-hot-middleware/client', './src/client/__vendor__.js'],
-        app: ['./src/client/__app__.js']
+        app: ['webpack-hot-middleware/client', './src/client/__app__.js']
     },
     output: {
-        path: path.join(__dirname, 'src/static'),
+        path: path.join(__dirname, 'build/static'),
         publicPath: "/static/",
         filename: "js/[name].js"
     },
@@ -23,7 +22,6 @@ module.exports = {
         // new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/),
         // new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.optimize.CommonsChunkPlugin('vendors', 'js/vendors.js'),
         new webpack.NoErrorsPlugin()
     ],
     module: {
