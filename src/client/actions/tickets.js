@@ -34,3 +34,15 @@ export function receiveStats(payload) {
 export function requestStatsFail(error) {
     return {type: tickets.REQUEST_STATS_FAIL, payload: error, error: true};
 }
+
+export function checkInTicket(ticketId) {
+    return {type: tickets.CHECKIN_TICKETS, payload: ticketId};
+}
+
+export function checkInTicketSuccess(ticketId) {
+    return {type: tickets.CHECKIN_TICKETS_SUCCESS, ticketId};
+}
+
+export function checkInTicketFail(error) {
+    return {type: tickets.CHECKIN_TICKETS_FAIL, payload: error, error: true};
+}

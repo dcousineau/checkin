@@ -1,9 +1,9 @@
-import {takeLatest} from 'redux-saga';
+import {takeLatest, takeEvery} from 'redux-saga';
 import {fork, call, put} from 'redux-saga/effects';
 
-import {REQUEST_TICKETS, UPLOAD_TICKETS, REQUEST_STATS} from '../constants/tickets';
-import {receiveTickets, requestTicketsFail, uploadTicketsSuccess, uploadTicketsFail, receiveStats, requestStatsFail} from '../actions/tickets';
-import {getAllTickets, postTickets, getStats} from '../api/tickets';
+import {REQUEST_TICKETS, UPLOAD_TICKETS, REQUEST_STATS, CHECKIN_TICKETS} from '../constants/tickets';
+import {requestTickets, receiveTickets, requestTicketsFail, uploadTicketsSuccess, uploadTicketsFail, receiveStats, requestStatsFail, checkInTicketSuccess, checkInTicketFail} from '../actions/tickets';
+import {getAllTickets, postTickets, getStats, checkIn} from '../api/tickets';
 
 function* fetchTickets() {
     try {
@@ -46,10 +46,28 @@ function* watchFetchStats() {
     yield* takeLatest(REQUEST_STATS, fetchStats);
 }
 
+
+
+function* checkInTicket({payload: ticketId}) {
+    try {
+        yield call(checkIn, ticketId);
+        yield put(checkInTicketSuccess(ticketId));
+        yield put(requestTickets()); //Trigger a re-fetch on the tickets
+    } catch (e) {
+        yield put(checkInTicketFail(e));
+    }
+}
+
+function* watchCheckInTickets() {
+    yield takeEvery(CHECKIN_TICKETS, checkInTicket);
+}
+
+
 export default function* saga() {
     yield [
         fork(watchFetchTickets),
         fork(watchUploadTickets),
-        fork(watchFetchStats)
+        fork(watchFetchStats),
+        fork(watchCheckInTickets)
     ];
 }

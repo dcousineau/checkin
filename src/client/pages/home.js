@@ -8,7 +8,7 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
 import Dialog from 'material-ui/lib/dialog';
 import FlatButton from 'material-ui/lib/flat-button';
 
-import {requestTickets} from '../actions/tickets';
+import {requestTickets, checkInTicket} from '../actions/tickets';
 
 import TicketList from '../components/ticket-list';
 
@@ -33,7 +33,12 @@ class Home extends React.Component {
     };
 
     filterTickets() {
-        return this.props.tickets.data.filter(ticket => true);
+        return this.props.tickets.data.filter(ticket => ticket.checkedIn === false);
+    }
+
+    confirmCheckInTicket(ticket) {
+        const {dispatch} = this.props;
+        dispatch(checkInTicket(ticket.id));
     }
 
     generateCheckInDialog() {
@@ -51,7 +56,10 @@ class Home extends React.Component {
                 label="Confirm"
                 primary={true}
                 keyboardFocused={true}
-                onTouchTap={this.onCloseDialog}
+                onTouchTap={() => {
+                    this.confirmCheckInTicket(ticket);
+                    this.onCloseDialog();
+                }}
             />
         ];
 
@@ -61,7 +69,14 @@ class Home extends React.Component {
                     modal={false}
                     open={!!this.state.selectedTicket}
                     onRequestClose={this.onCloseDialog} >
-                The actions in this window were passed in as an array of React objects.
+                <dl>
+                    <dt>Ticket ID:</dt>
+                    <dd>{ticket.id}</dd>
+                    <dt>Ticket Type:</dt>
+                    <dd>{ticket.type}</dd>
+                    <dt>Company:</dt>
+                    <dd>{ticket.company}</dd>
+                </dl>
             </Dialog>
         );
     }

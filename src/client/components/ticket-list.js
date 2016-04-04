@@ -22,6 +22,7 @@ export default class TicketList extends React.Component {
     }
 
     render() {
+        console.log(this.tickets);
         const tickets = groupBy(this.props.tickets, ticket => ticket.lastName.charAt(0).toUpperCase());
 
         const items = [];

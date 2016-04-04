@@ -20,3 +20,10 @@ export function postTickets(files) {
     })
         .then(res => res.json());
 }
+
+export function checkIn(ticketId) {
+    return fetch(`/api/ticket/check-in/${ticketId}`, {
+        method: 'PUT'
+    })
+        .then(res => res.json());
+}

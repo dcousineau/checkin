@@ -1,8 +1,12 @@
 import {Router} from 'express';
+import fs from 'fs';
 import {parse} from 'csv';
 import Multer from 'multer';
+import Canvas from 'canvas';
+import {spawn} from 'child_process';
 
 import db from '../db';
+import renderBadge from '../../common/badge';
 
 const upload = new Multer();
 const api = new Router();
@@ -64,12 +68,49 @@ api.post('/tickets', upload.single('tickets'), (req, res) => {
         const tickets = data.map(ticket => formatTicket(ticket));
 
         will(db.remove.bind(db), {}, {multi: true})
-            .then(() => will(db.insert.bind(db), tickets))
+            .then((affected) => will(db.insert.bind(db), tickets))
             .then(newDocs => res.json(newDocs.length))
             .catch(e => res.status(500).json({error: e}));
     });
 });
 
+const printBadge = (badge, copies=2) => {
+    return new Promise((resolve, reject) => {
+        const stream = badge.pngStream();
+        //@TODO: Make printer configurable
+        const print = spawn('lp', ['-d', 'Brother_QL_700', '-o', 'media=Custom.200x100px', '-o', 'Collate=True', '-n', `${copies}`]);
 
+        print.stdout.on('data', data => console.log(`PRINT: ${data}`));
+        print.stderr.on('data', data => console.log(`PRINT ERR: ${data}`));
+
+        // Pipe the PNG stream directly into the lp process we spawned. WHO NEEDS TEMPORARY FILES!?
+        stream.on('data', chunk => print.stdin.write(chunk));
+        stream.on('end', () => print.stdin.end());
+        stream.on('error', () => reject());
+
+        print.on('close', () => resolve());
+        print.on('error', () => reject());
+    });
+};
+
+api.put('/ticket/check-in/:id', (req, res) => {
+    will(db.findOne.bind(db), {id: req.params.id})
+        .then(ticket => will(db.update.bind(db), {id: req.params.id}, {$set: {checkedIn: true}}, {}).then(() => ticket))
+        .then(ticket => {
+            const badge = renderBadge({
+                firstName: ticket.firstName,
+                lastName: ticket.lastName,
+                type: ticket.type,
+                badge: {
+                    width: 400,
+                    height: 200
+                }
+            }, new Canvas(300, 150));
+
+            printBadge(badge)
+                .then(() => res.json({success: true}))
+                .catch(() => res.status(500).json());
+        });
+});
 
 export default api;
