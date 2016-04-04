@@ -13,6 +13,15 @@
 3. Open your browser to the IP address it declares it is listening at
 4. Other devices on the same network should be able to access via this IP as well
 
+## Screenshots
+
+![Admin Panel](./docs/admin.png)
+![Attendee List](./docs/list.png)
+![Check-in Confirmation](./docs/check-in.png)
+![Printed Out Badges](./docs/print.jpg)
+
+Above badges were printed with a [Brother QL-700](http://www.brother-usa.com/LabelPrinter/ModelDetail/23/ql700/Overview)
+
 ## License
 
 This application is licensed under the [GPL v2 License](http://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
