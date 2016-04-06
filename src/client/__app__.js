@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import io from 'socket.io-client';
 
 import initializeStore from './store';
 
@@ -17,6 +18,16 @@ injectTapEventPlugin();
 const store = initializeStore();
 const history = syncHistoryWithStore(browserHistory, store);
 
+const socket = io.connect();
+
+socket.on('connect', () => {
+    console.debug("Connected to socket.io server");
+    const dispatch = store.dispatch.bind(store);
+    socket.on('action', (data) => {
+        console.log("Got an action", data);
+        dispatch(data);
+    });
+});
 
 ReactDOM.render(
     <Provider store={store}>

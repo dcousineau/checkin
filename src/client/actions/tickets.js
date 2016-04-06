@@ -46,3 +46,7 @@ export function checkInTicketSuccess(ticketId) {
 export function checkInTicketFail(error) {
     return {type: tickets.CHECKIN_TICKETS_FAIL, payload: error, error: true};
 }
+
+export function manuallyPrintBadge(badge) {
+    return {type: tickets.MANUALLY_PRINT_BADGE, payload: badge};
+}

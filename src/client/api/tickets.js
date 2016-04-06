@@ -27,3 +27,15 @@ export function checkIn(ticketId) {
     })
         .then(res => res.json());
 }
+
+export function printBadge(badge) {
+    return fetch(`/api/print-badge`, {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(badge)
+    })
+        .then(res => res.json());
+}

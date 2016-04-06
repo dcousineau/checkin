@@ -1,9 +1,9 @@
 import {takeLatest, takeEvery} from 'redux-saga';
 import {fork, call, put} from 'redux-saga/effects';
 
-import {REQUEST_TICKETS, UPLOAD_TICKETS, REQUEST_STATS, CHECKIN_TICKETS} from '../constants/tickets';
+import {REQUEST_TICKETS, UPLOAD_TICKETS, REQUEST_STATS, CHECKIN_TICKETS, MANUALLY_PRINT_BADGE} from '../constants/tickets';
 import {requestTickets, receiveTickets, requestTicketsFail, uploadTicketsSuccess, uploadTicketsFail, receiveStats, requestStatsFail, checkInTicketSuccess, checkInTicketFail} from '../actions/tickets';
-import {getAllTickets, postTickets, getStats, checkIn} from '../api/tickets';
+import {getAllTickets, postTickets, getStats, checkIn, printBadge} from '../api/tickets';
 
 function* fetchTickets() {
     try {
@@ -46,8 +46,6 @@ function* watchFetchStats() {
     yield* takeLatest(REQUEST_STATS, fetchStats);
 }
 
-
-
 function* checkInTicket({payload: ticketId}) {
     try {
         yield call(checkIn, ticketId);
@@ -63,11 +61,24 @@ function* watchCheckInTickets() {
 }
 
 
+function* manuallyPrintBadge({payload}) {
+    try {
+        yield call(printBadge, payload);
+    } catch (e) {
+        console.error("Failed to print badge", e);
+    }
+}
+
+function* watchManuallyPrintBadge() {
+    yield takeLatest(MANUALLY_PRINT_BADGE, manuallyPrintBadge);
+}
+
 export default function* saga() {
     yield [
         fork(watchFetchTickets),
         fork(watchUploadTickets),
         fork(watchFetchStats),
-        fork(watchCheckInTickets)
+        fork(watchCheckInTickets),
+        fork(watchManuallyPrintBadge)
     ];
 }

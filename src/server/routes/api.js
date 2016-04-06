@@ -4,6 +4,7 @@ import {parse} from 'csv';
 import Multer from 'multer';
 import Canvas from 'canvas';
 import {spawn} from 'child_process';
+import bodyParser from 'body-parser';
 
 import db from '../db';
 import renderBadge from '../../common/badge';
@@ -97,6 +98,16 @@ api.put('/ticket/check-in/:id', (req, res) => {
     will(db.findOne.bind(db), {id: req.params.id})
         .then(ticket => will(db.update.bind(db), {id: req.params.id}, {$set: {checkedIn: true}}, {}).then(() => ticket))
         .then(ticket => {
+            const {io} = req.app.locals;
+
+            io.emit('action', {type: 'CHECKIN_TICKETS_UPDATE', payload: {
+                ticketId: ticket.id,
+                checkedIn: true
+            }});
+
+            return ticket;
+        })
+        .then(ticket => {
             const badge = renderBadge({
                 firstName: ticket.firstName,
                 lastName: ticket.lastName,
@@ -105,12 +116,28 @@ api.put('/ticket/check-in/:id', (req, res) => {
                     width: 400,
                     height: 200
                 }
-            }, new Canvas(300, 150));
+            }, new Canvas(400, 200));
 
             printBadge(badge)
                 .then(() => res.json({success: true}))
                 .catch(() => res.status(500).json());
         });
+});
+
+api.put('/print-badge', bodyParser.json(), (req, res) => {
+    const badge = renderBadge({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        type: req.body.type,
+        badge: {
+            width: 400,
+            height: 200
+        }
+    }, new Canvas(400, 200));
+
+    printBadge(badge)
+        .then(() => res.json({success: true}))
+        .catch(() => res.status(500).json());
 });
 
 export default api;

@@ -20,6 +20,7 @@ export default function renderBadge({firstName, lastName, type, badge}, canvas) 
 
     //Print first name
     (() => {
+        if (!firstName) return;
         const ctx = canvas.getContext('2d');
         let width = 0;
         let fontHeight = 0;
@@ -36,6 +37,7 @@ export default function renderBadge({firstName, lastName, type, badge}, canvas) 
 
     //Print last name
     (() => {
+        if (!lastName) return;
         const ctx = canvas.getContext('2d');
         let width = 0;
         let fontHeight = 0;
@@ -53,6 +55,7 @@ export default function renderBadge({firstName, lastName, type, badge}, canvas) 
 
     //Print Type
     (() => {
+        if (!type) return;
         const ctx = canvas.getContext('2d');
         let width = 0;
         let fontHeight = 0;

@@ -63,6 +63,19 @@ export default function reducer(state = defaultState, action) {
                 ...state,
                 ticketCount: null
             };
+        case tickets.CHECKIN_TICKETS_UPDATE:
+            const {ticketId, checkedIn} = action.payload;
+            const data = state.data.map(ticket => {
+                if (ticket.id !== ticketId) return ticket;
+                return {
+                    ...ticket,
+                    checkedIn: !!checkedIn
+                };
+            });
+            return {
+                ...state,
+                data
+            };
         default:
             return state;
     }
