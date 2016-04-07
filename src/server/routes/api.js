@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import fs from 'fs';
+import {omit} from 'lodash/object';
 import {parse} from 'csv';
 import Multer from 'multer';
 import Canvas from 'canvas';
@@ -67,10 +67,9 @@ const formatTicket = ticket => {
 api.post('/tickets', upload.single('tickets'), (req, res) => {
     parse(req.file.buffer.toString('UTF-8'), {columns: true}, (err, data) => {
         const tickets = data.map(ticket => formatTicket(ticket));
-
-        will(db.remove.bind(db), {}, {multi: true})
-            .then((affected) => will(db.insert.bind(db), tickets))
-            .then(newDocs => res.json(newDocs.length))
+        will(db.remove.bind(db), {id: {$nin: tickets.map(ticket => ticket.id)}}) //Remove tickets that no longer exist
+            .then(() => Promise.all(tickets.map(ticket => will(db.update.bind(db), {id: ticket.id}, {$set: omit(ticket, ['checkedIn'])}, {upsert: true})))) //Update everything but preserve checkedIn
+            .then(results => res.json(results.length))
             .catch(e => res.status(500).json({error: e}));
     });
 });

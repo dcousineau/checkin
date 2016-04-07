@@ -21,10 +21,9 @@ const history = syncHistoryWithStore(browserHistory, store);
 const socket = io.connect();
 
 socket.on('connect', () => {
-    console.debug("Connected to socket.io server");
     const dispatch = store.dispatch.bind(store);
+    // dispatch('SOCKET_CONNECTED');
     socket.on('action', (data) => {
-        console.log("Got an action", data);
         dispatch(data);
     });
 });

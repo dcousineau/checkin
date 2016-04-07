@@ -31,7 +31,7 @@ class Admin extends React.Component {
     }
 
     onChangeFiles = (e) => {
-        if (this.props.ticketCount && !confirm("There are tickets in the system, do you wish to replace them (including checked in/out status)?")) {
+        if (this.props.ticketCount && !confirm("This will UPDATE all tickets in the system (without affecting checked in status) and remove old tickets that are not in this CSV.\n\nAre you sure you wish to continue?")) {
             return;
         }
 

@@ -10,6 +10,16 @@ const defaultState = {
     ticketUploadError: false
 };
 
+function formatTickets(tickets) {
+    return tickets.map(ticket => {
+        return {
+            ...ticket,
+            checkedIn: !!ticket.checkedIn
+        };
+    });
+}
+
+
 export default function reducer(state = defaultState, action) {
     switch(action.type) {
         case tickets.REQUEST_TICKETS:
@@ -21,7 +31,7 @@ export default function reducer(state = defaultState, action) {
         case tickets.RECEIVE_TICKETS:
             return {
                 ...state,
-                data: action.payload,
+                data: formatTickets(action.payload),
                 isFetching: false,
                 ticketFetchError: false
             };
