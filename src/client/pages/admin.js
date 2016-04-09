@@ -88,6 +88,12 @@ class Admin extends React.Component {
                                multiple={false}
                                accept="text/csv"
                                onChange={this.onChangeFiles} />
+
+
+                        <RaisedButton label="Download Checked In Report"
+                                      secondary={true}
+                                      onClick={() => window.open("/api/report/checked-in")}
+                                      style={{marginLeft: 12}} />
                     </CardText>
                 </Card>
                 <br />

@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import {omit} from 'lodash/object';
-import {parse} from 'csv';
+import {parse, stringify} from 'csv';
 import Multer from 'multer';
 import Canvas from 'canvas';
 import {spawn} from 'child_process';
@@ -137,6 +137,22 @@ api.put('/print-badge', bodyParser.json(), (req, res) => {
     printBadge(badge)
         .then(() => res.json({success: true}))
         .catch(() => res.status(500).json());
+});
+
+const filterTicket = ticket => [
+    ticket.id,
+    ticket.lastName,
+    ticket.firstName,
+    ticket.company,
+    ticket.type
+];
+
+api.get('/report/checked-in', (req, res) => {
+    res.set('Content-Type', 'text/csv');
+    will(db.find.bind(db), {checkedIn: true})
+        .then(attendees => attendees.map(filterTicket))
+        .then(attendees => [['ID', 'Last Name', 'First Name', 'Company', 'Type']].concat(attendees))
+        .then(data => stringify(data, (err, output) => res.send(output)));
 });
 
 export default api;
