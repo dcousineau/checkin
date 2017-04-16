@@ -9,8 +9,8 @@ import renderBadge from '../../common/badge';
 
 class Admin extends React.Component {
     state = {
-        firstName: null,
-        lastName: null,
+        firstName: "",
+        lastName: "",
         type: "General Admission"
     };
 
@@ -76,10 +76,14 @@ class Admin extends React.Component {
                     <CardTitle title="Update Tickets" subtitle="Upload CSV from ti.to" />
                     <CardText>
                         There are <strong>{this.props.ticketCount || "NO"}</strong> tickets in the database.
+                        
                         <br/><br/>
+
                         <RaisedButton label="Upload Tickets"
                                       primary={true}
+                                      style={{marginRight: 12}}
                                       onClick={() => this.csvFile.click()} />
+
                         <input ref={ref => this.csvFile = ref}
                                type="file"
                                style={{display: 'none'}}
@@ -90,16 +94,18 @@ class Admin extends React.Component {
 
                         <RaisedButton label="Download Checked In Report"
                                       secondary={true}
-                                      onClick={() => window.open("/api/report/checked-in")}
-                                      style={{marginLeft: 12}} />
+                                      onClick={() => window.open("/api/report/checked-in")} />
                     </CardText>
                 </Card>
                 <br />
                 <Card>
                     <CardTitle title="Manual Print" subtitle="Manually print a name badge" />
                     <CardText>
-                        <div className="badge-preview" style={{float: 'right'}}>
-                            <canvas ref={ref => this.canvas = ref} width="400" height="200" style={{border: "2px solid black"}} />
+                        <div className="badge-preview" style={{float: "right", width: "100%", maxWidth: "400px"}}>
+                            <canvas ref={ref => this.canvas = ref} 
+                                    width="400" 
+                                    height="200" 
+                                    style={{border: "2px solid black", width: "100%"}} />
                         </div>
                         <TextField
                             name="firstName"

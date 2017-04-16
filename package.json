@@ -58,6 +58,7 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
     "babel-register": "^6.6.5",
+    "bundle-loader": "^0.5.5",
     "concurrently": "^3.4.0",
     "json-loader": "^0.5.4",
     "nodemon": "^1.11.0",
