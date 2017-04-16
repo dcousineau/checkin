@@ -10,7 +10,6 @@ import PageNotFound from '../pages/pagenotfound';
 const lazy = loader => {
     class LazyLoader extends React.Component {
         state = {
-            // short for "module" but that's a keyword in js, so "mod"
             Component: null,
         };
 
