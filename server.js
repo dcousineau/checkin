@@ -15,6 +15,6 @@ const port = parseInt(process.env.PORT) || process.env.NODE_ENV == 'production' 
 
 require('dns').lookup(require('os').hostname(), function (err, add, fam) {
     app.listen(port, host, () => {
-        console.log(`Listening at ${add} on port ${port}`);
+        console.log(`Listening at ${add} (${host}) on port ${port}`);
     });
 });
