@@ -1,23 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import io from 'socket.io-client';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import initializeStore from './store';
 
-import Layout from './pages/layout';
-import Home from './pages/home';
-import PageNotFound from './pages/pagenotfound';
-import Admin from './pages/admin';
+import App from './containers/app';
 
 injectTapEventPlugin();
 
 const store = initializeStore();
-const history = syncHistoryWithStore(browserHistory, store);
-
 const socket = io.connect();
 
 socket.on('connect', () => {
@@ -28,15 +23,21 @@ socket.on('connect', () => {
     });
 });
 
-ReactDOM.render(
-    <Provider store={store}>
-        <Router history={history}>
-            <Route path="/" component={Layout}>
-                <IndexRoute component={Home} />
-                <Route path="admin" component={Admin} />
-                <Route path="*" component={PageNotFound} />
-            </Route>
-        </Router>
-    </Provider>,
-    document.getElementById("content")
-);
+const render = AppContainer => {
+    ReactDOM.render(
+        <Provider store={store}>
+            <MuiThemeProvider>
+                <Router>
+                    <AppContainer />
+                </Router>
+            </MuiThemeProvider>
+        </Provider>,
+        document.getElementById("content")
+    );
+}
+
+render(App);
+
+if (module.hot) {
+  module.hot.accept('./containers/app', () => render(App));
+}

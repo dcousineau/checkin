@@ -1,10 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import RaisedButton from 'material-ui/lib/raised-button';
-import Card from 'material-ui/lib/card/card';
-import CardTitle from 'material-ui/lib/card/card-title';
-import CardText from 'material-ui/lib/card/card-text';
-import TextField from 'material-ui/lib/text-field';
+import RaisedButton from 'material-ui/RaisedButton';
+import {Card, CardTitle, CardText} from 'material-ui/Card';
+import TextField from 'material-ui/TextField';
 
 import {uploadTickets, requestStats, manuallyPrintBadge} from '../actions/tickets';
 import renderBadge from '../../common/badge';

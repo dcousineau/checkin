@@ -1,16 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {groupBy} from 'lodash/collection';
 import {isEqual} from 'lodash/lang';
-import List from 'material-ui/lib/lists/list';
-import ListItem from 'material-ui/lib/lists/list-item';
-import Divider from 'material-ui/lib/divider';
-import Avatar from 'material-ui/lib/avatar';
-import * as Colors from 'material-ui/lib/styles/colors';
+import {List, ListItem} from 'material-ui/List';
+import Divider from 'material-ui/Divider';
+import Avatar from 'material-ui/Avatar';
+import * as Colors from 'material-ui/styles/colors';
 
 export default class TicketList extends React.Component {
     static propTypes = {
-        tickets: React.PropTypes.array.isRequired,
-        onSelectTicket: React.PropTypes.func
+        tickets: PropTypes.array.isRequired,
+        onSelectTicket: PropTypes.func
     };
 
     static defaultProps = {

@@ -1,12 +1,17 @@
-var path = require('path');
-var webpack = require('webpack');
-
+const path = require('path');
+const webpack = require('webpack');
+const StatsWriterPlugin = require("webpack-stats-plugin").StatsWriterPlugin;
 
 module.exports = {
     name: 'app',
-    devtool: 'source-map', //devtool: 'eval' for maximum build performance
+    devtool: 'eval-source-map', //devtool: 'eval' for maximum build performance
     entry: {
-        app: ['webpack-hot-middleware/client', './src/client/__app__.js']
+        vendors: [
+            'react-hot-loader/patch',
+            'webpack-dev-server/client?http://localhost:3001/',
+            './src/client/__vendors__.js',
+        ],
+        app: './src/client/__app__.js',
     },
     output: {
         path: path.join(__dirname, 'build/static'),
@@ -19,34 +24,55 @@ module.exports = {
                 "NODE_ENV": JSON.stringify("development")
             }
         }),
-        // new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/),
-        // new webpack.optimize.OccurenceOrderPlugin(),
+
+        new StatsWriterPlugin({
+            filename: "assets.json"
+        }),
+
+        //The minChunks function ensures vendors only includes those files that are produced from 3rd party vendors,
+        //namely anything in the node_modules folder
+        new webpack.optimize.CommonsChunkPlugin({
+            name: "vendors",
+            minChunks: function(module){
+                return module.context && module.context.indexOf("node_modules") !== -1;
+            }
+        }),
+        
+        //The minChunks: Infinity creates a separate chunk, `manifest`, that contains only bootstrapping information
+        //required by Webpack compiled modules
+        new webpack.optimize.CommonsChunkPlugin({
+            name: "manifest",
+            minChunks: Infinity
+        }),
+
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoErrorsPlugin()
+
+        new webpack.NamedModulesPlugin(),
+
+        // new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/),
+        new webpack.NoEmitOnErrorsPlugin(),
     ],
     module: {
-        // preLoaders: [
-        //     {
-        //         test: /\.jsx?$/,
-        //         loader: "eslint-loader",
-        //         exclude: /node_modules/
-        //     }
-        // ],
-        loaders: [
+        rules: [
             {
                 test: /\.jsx?$/,
-                loaders: [
-                    'react-hot',
-                    'babel?' + JSON.stringify({
-                        "babelrc": false,
-                        "presets": ["es2015", "react", "stage-0"],
-                        "plugins": [
-                            ["transform-runtime", {
-                                "polyfill": true,
-                                "regenerator": true
-                            }]
-                        ]
-                    })
+                use: [
+                    'react-hot-loader/webpack',
+                    {
+                        loader: "babel-loader",
+                        options: {
+                            babelrc: false,
+                            presets: [["es2015", {"modules": false}], "react", "stage-0"],
+                            plugins: [
+                                "react-hot-loader/babel",
+                                ["transform-runtime", {
+                                    "polyfill": true,
+                                    "regenerator": true
+                                }],
+                                "transform-react-jsx-source"
+                            ],
+                        }
+                    }
                 ],
                 exclude: /node_modules/
             },
@@ -56,9 +82,9 @@ module.exports = {
             }
         ]
     },
-    // resolve: {
-    //     root: path.resolve(__dirname, 'src/client'),
-    //     modulesDirectories: [path.resolve(__dirname, 'src/client'), path.resolve(__dirname, 'node_modules')],
-    //     extensions: ['', '.js', '.jsx', '.css', '.scss', '.sass']
-    // }
+    devServer: {
+        hot: true,
+        compress: true,
+        port: 3001
+    }
 };

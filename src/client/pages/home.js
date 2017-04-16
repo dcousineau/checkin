@@ -1,12 +1,11 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import Toolbar from 'material-ui/lib/toolbar/toolbar';
-import ToolbarGroup from 'material-ui/lib/toolbar/toolbar-group';
-import DropDownMenu from 'material-ui/lib/DropDownMenu';
-import MenuItem from 'material-ui/lib/menus/menu-item';
-import Dialog from 'material-ui/lib/dialog';
-import FlatButton from 'material-ui/lib/flat-button';
+import {Toolbar, ToolbarGroup} from 'material-ui/Toolbar';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import {MenuItem} from 'material-ui/Menu';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 
 import {requestTickets, checkInTicket} from '../actions/tickets';
 
@@ -99,7 +98,7 @@ class Home extends React.Component {
         return (
             <div>
                 <Toolbar>
-                    <ToolbarGroup firstChild={true} float="left">
+                    <ToolbarGroup firstChild={true} style={{float: "left"}}>
                         <DropDownMenu onChange={(event, index, filter) => this.setState({filter})} value={this.state.filter}>
                             <MenuItem value={'all'} primaryText="All Attendees" />
                             <MenuItem value={'missing'} primaryText="Not Checked In" />

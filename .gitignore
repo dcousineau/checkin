@@ -1,5 +1,5 @@
 node_modules
 .idea
-npm-debug.log
-tickets.db
+npm-debug.log*
+tickets*.db*
 build

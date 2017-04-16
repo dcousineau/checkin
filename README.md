@@ -2,14 +2,14 @@
 
 ## Quick Start
 
-1. Clone this repo and run `npm install`
-3. Run `npm start` to initialize the server
+1. Clone this repo and run `yarn install`
+3. Run `yarn start` to initialize the server
 4. Navigate to [http://localhost:3000/](http://localhost:3000/) in your browser
 
 ## Production Mode
 
-1. Clone this repo and run `npm install`
-2. Run `npm run prod`
+1. Clone this repo and run `yarn install`
+2. Run `yarn run prod`
 3. Open your browser to the IP address it declares it is listening at
 4. Other devices on the same network should be able to access via this IP as well
 

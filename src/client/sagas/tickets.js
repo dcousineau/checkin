@@ -1,5 +1,4 @@
-import {takeLatest, takeEvery} from 'redux-saga';
-import {fork, call, put} from 'redux-saga/effects';
+import {takeLatest, takeEvery, fork, call, put} from 'redux-saga/effects';
 
 import {REQUEST_TICKETS, UPLOAD_TICKETS, REQUEST_STATS, CHECKIN_TICKETS, MANUALLY_PRINT_BADGE} from '../constants/tickets';
 import {requestTickets, receiveTickets, requestTicketsFail, uploadTicketsSuccess, uploadTicketsFail, receiveStats, requestStatsFail, checkInTicketSuccess, checkInTicketFail} from '../actions/tickets';
@@ -15,7 +14,7 @@ function* fetchTickets() {
 }
 
 function* watchFetchTickets() {
-    yield* takeLatest(REQUEST_TICKETS, fetchTickets);
+    yield takeLatest(REQUEST_TICKETS, fetchTickets);
 }
 
 
@@ -43,7 +42,7 @@ function* fetchStats() {
 }
 
 function* watchFetchStats() {
-    yield* takeLatest(REQUEST_STATS, fetchStats);
+    yield takeLatest(REQUEST_STATS, fetchStats);
 }
 
 function* checkInTicket({payload: ticketId}) {

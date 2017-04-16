@@ -1,8 +1,8 @@
 import React from 'react';
-import {Link} from 'react-router';
-import AppBar from 'material-ui/lib/app-bar';
-import LeftNav from 'material-ui/lib/left-nav';
-import MenuItem from 'material-ui/lib/menus/menu-item';
+import {Link} from 'react-router-dom';
+import AppBar from 'material-ui/AppBar';
+import Drawer from 'material-ui/Drawer';
+import MenuItem from 'material-ui/MenuItem';
 
 
 export default class Layout extends React.Component {
@@ -17,15 +17,15 @@ export default class Layout extends React.Component {
             <div id="app-container">
                 <AppBar title="CheckIn"
                         onLeftIconButtonTouchTap={() => this.setState(prevState => ({open: !prevState.open}))} />
-                <LeftNav className="nav-bar"
-                         docked={false}
-                         width={200}
-                         open={this.state.open}
-                         onRequestChange={open => this.setState({open})}>
+                <Drawer className="nav-bar"
+                        docked={false}
+                        width={200}
+                        open={this.state.open}
+                        onRequestChange={open => this.setState({open})}>
                     <Link to="/" onClick={this.closeMenu}><MenuItem>CheckIn</MenuItem></Link>
-                    <Link to="/print-queue" onClick={this.closeMenu}><MenuItem>Print Queue</MenuItem></Link>
+                    {/* <Link to="/print-queue" onClick={this.closeMenu}><MenuItem>Print Queue</MenuItem></Link> */}
                     <Link to="/admin" onClick={this.closeMenu}><MenuItem>Admin</MenuItem></Link>
-                </LeftNav>
+                </Drawer>
                 <div id="app-content">
                     {this.props.children}
                 </div>
