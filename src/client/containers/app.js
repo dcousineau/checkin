@@ -15,22 +15,16 @@ const lazy = loader => {
         };
 
         componentWillMount() {
-            this.load();
-        }
-
-        load = props => {
-            this.setState({
-                Component: null,
-            }, () => loader(mod => this.setState({
+            loader(mod => this.setState({
                 Component: mod.default ? mod.default : mod,
-            })));
+            }));
         }
-
+        
         render() {
             const {Component} = this.state;
 
             if (Component !== null) {
-                return <Component />;
+                return <Component {...this.props} />;
             } else {
                 return (
                     <div className="center-center-loader">
