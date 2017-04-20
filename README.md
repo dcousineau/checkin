@@ -18,6 +18,7 @@ _See the pre-requisites section for expected system packages_
 ## Screenshots
 
 ![Admin Panel](./docs/admin.png)
+![Admin Stats Panel](./docs/stats.png)
 ![Attendee List](./docs/list.png)
 ![Check-in Confirmation](./docs/check-in.png)
 ![Printed Out Badges](./docs/print.jpg)
