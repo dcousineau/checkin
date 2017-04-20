@@ -21,9 +21,16 @@ export function postTickets(files) {
         .then(res => res.json());
 }
 
-export function checkIn(ticketId) {
+export function checkIn(ticketId, print = true) {
     return fetch(`/api/ticket/check-in/${ticketId}`, {
-        method: 'PUT'
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            print,
+        }),
     })
         .then(res => res.json());
 }

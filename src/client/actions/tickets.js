@@ -35,8 +35,8 @@ export function requestStatsFail(error) {
     return {type: tickets.REQUEST_STATS_FAIL, payload: error, error: true};
 }
 
-export function checkInTicket(ticketId) {
-    return {type: tickets.CHECKIN_TICKETS, payload: ticketId};
+export function checkInTicket(ticketId, print = true) {
+    return {type: tickets.CHECKIN_TICKETS, payload: {ticketId, print}};
 }
 
 export function checkInTicketSuccess(ticketId) {

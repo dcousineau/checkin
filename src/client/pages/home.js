@@ -6,6 +6,7 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import {MenuItem} from 'material-ui/Menu';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import {requestTickets, checkInTicket} from '../actions/tickets';
 
@@ -49,9 +50,9 @@ class Home extends React.Component {
         return this.props.tickets.data.filter(filterFunc);
     }
 
-    confirmCheckInTicket(ticket) {
+    confirmCheckInTicket(ticket, print) {
         const {dispatch} = this.props;
-        dispatch(checkInTicket(ticket.id));
+        dispatch(checkInTicket(ticket.id, print));
     }
 
     generateCheckInDialog() {
@@ -63,17 +64,27 @@ class Home extends React.Component {
             <FlatButton
                 label="Cancel"
                 secondary={true}
+                style={{margin: 12}}
                 onTouchTap={this.onCloseDialog}
             />,
-            <FlatButton
+            <RaisedButton
                 label="Confirm"
+                style={{margin: 12}}
+                onTouchTap={() => {
+                    this.confirmCheckInTicket(ticket, false);
+                    this.onCloseDialog();
+                }}
+            />,
+            <RaisedButton
+                label="Confirm & Print"
                 primary={true}
                 keyboardFocused={true}
+                style={{margin: 12}}
                 onTouchTap={() => {
                     this.confirmCheckInTicket(ticket);
                     this.onCloseDialog();
                 }}
-            />
+            />,
         ];
 
         return (

@@ -45,9 +45,9 @@ function* watchFetchStats() {
     yield takeLatest(REQUEST_STATS, fetchStats);
 }
 
-function* checkInTicket({payload: ticketId}) {
+function* checkInTicket({payload: {ticketId, print = true}}) {
     try {
-        yield call(checkIn, ticketId);
+        yield call(checkIn, ticketId, print);
         yield put(checkInTicketSuccess(ticketId));
         yield put(requestTickets()); //Trigger a re-fetch on the tickets
     } catch (e) {

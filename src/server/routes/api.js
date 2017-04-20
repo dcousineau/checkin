@@ -132,7 +132,7 @@ const printBadge = (badge, copies=2) => {
     });
 };
 
-api.put('/ticket/check-in/:id', (req, res) => {
+api.put('/ticket/check-in/:id', bodyParser.json(), (req, res) => {
     const notifyAboutUpdate = ticket => {
         const {io} = req.app.locals;
         io.emit('action', {type: 'CHECKIN_TICKETS_UPDATE', payload: {
@@ -154,7 +154,7 @@ api.put('/ticket/check-in/:id', (req, res) => {
                 height: 200
             }
         }, new Canvas(400, 200)))
-        .then(printBadge)
+        .then(req.body.print ? printBadge : noop => noop)
         .then(() => res.json({success: true}))
         .catch(() => res.status(500).json());
 });
