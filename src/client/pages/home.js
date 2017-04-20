@@ -82,13 +82,17 @@ class Home extends React.Component {
                     modal={false}
                     open={!!this.state.selectedTicket}
                     onRequestClose={this.onCloseDialog} >
-                <dl>
+                <dl style={{float:"left"}}>
                     <dt>Ticket ID:</dt>
                     <dd>{ticket.id}</dd>
                     <dt>Ticket Type:</dt>
                     <dd>{ticket.type}</dd>
+                </dl>
+                <dl style={{float:"right"}}>
                     <dt>Company:</dt>
                     <dd>{ticket.company}</dd>
+                    <dt>Shirt Size:</dt>
+                    <dd>{ticket.shirtSize}</dd>
                 </dl>
             </Dialog>
         );
