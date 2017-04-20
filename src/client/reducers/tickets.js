@@ -66,7 +66,8 @@ export default function reducer(state = defaultState, action) {
         case tickets.RECEIVE_STATS:
             return {
                 ...state,
-                ticketCount: action.payload.ticketCount
+                ticketCount: action.payload.ticketCount,
+                byType: action.payload.byType,
             };
         case tickets.REQUEST_STATS_FAIL:
             return {

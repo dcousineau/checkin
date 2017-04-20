@@ -23,10 +23,49 @@ function will(method, ...args) {
 
 api.get('/stats', (req, res) => {
     Promise.all([
-        will(db.count.bind(db), {})
-    ]).then(([ticketCount]) => {
+        will(db.count.bind(db), {}),
+        will(db.find.bind(db), {}),
+    ]).then(([ticketCount, allTix]) => {
+        let stats = allTix
+            .map(ticket => ticket)
+            .reduce((stats = {}, ticket) => {
+                if (!stats[ticket.type]) {
+                    stats[ticket.type] = {
+                        checkedIn: 0,
+                        total: 0,
+                    };
+                }
+
+                stats[ticket.type].total += 1;
+                
+                if (ticket.checkedIn) {
+                    stats[ticket.type].checkedIn += 1;
+                }
+
+                return stats;
+            }, {});
+        
+        let sortedKeys = Object.keys(stats)
+            .sort((a, b) => {
+                if (a < b) {
+                    return -1;
+                } else if (a > b) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            });
+        
+        stats = sortedKeys
+            .map(type => [type, stats[type]])
+            .reduce((stats = {}, [type, counts]) => {
+                stats[type] = counts;
+                return stats;
+            }, {});
+
         res.json({
-            ticketCount: ticketCount
+            ticketCount: ticketCount,
+            byType: stats,
         })
     });
 });

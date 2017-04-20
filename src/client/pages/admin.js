@@ -1,8 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
-import {Card, CardTitle, CardText} from 'material-ui/Card';
+import {Card, CardTitle, CardText, CardHeader, CardActions} from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
+import * as Colors from 'material-ui/styles/colors';
 
 import {uploadTickets, requestStats, manuallyPrintBadge} from '../actions/tickets';
 import renderBadge from '../../common/badge';
@@ -99,6 +100,27 @@ class Admin extends React.Component {
                 </Card>
                 <br />
                 <Card>
+                    <CardTitle
+                        title="Statistics"
+                        subtitle="Show checked in / total stats"
+                        actAsExpander={true}
+                        showExpandableButton={true} />
+                    <CardText expandable={true}>
+                        <dl style={{marginTop:0}}>
+                            {Object.keys(this.props.ticketCountByType).map(type => {
+                                const counts = this.props.ticketCountByType[type];
+                                return [
+                                    <dt>{type}</dt>,
+                                    <dd style={{color: Colors.blueGrey600}}>
+                                        <span style={{color: Colors.green600}}>{counts.checkedIn}</span>/<span>{counts.total}</span>
+                                    </dd>
+                                ]
+                            })}
+                        </dl>
+                    </CardText>
+                </Card>
+                <br />
+                <Card>
                     <CardTitle title="Manual Print" subtitle="Manually print a name badge" />
                     <CardText>
                         <div className="badge-preview" style={{float: "right", width: "100%", maxWidth: "400px"}}>
@@ -138,6 +160,7 @@ class Admin extends React.Component {
 const mapStateToProps = ({tickets}) => ({
     isUploading: tickets.isUploading,
     ticketCount: tickets.ticketCount,
+    ticketCountByType: tickets.byType || {},
     ticketUploadError: tickets.ticketUploadError
 });
 
