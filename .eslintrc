@@ -1,7 +1,7 @@
 {
   "extends": [
-    "prettier",
-    "prettier/react"
+    "eslint-config-prettier",
+    "eslint-config-prettier/react"
   ],
   "parser": "babel-eslint",
   "parserOptions": {
