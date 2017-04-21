@@ -8,13 +8,12 @@ require('babel-register')({
     babelrc: false //Do not use babelrc
 });
 
+const parrotSay = require('parrotsay-api');
 const app = require('./src/server').default;
 
 const host = process.env.HOST || process.env.NODE_ENV == 'production' ? '0.0.0.0' : '127.0.0.1';
 const port = parseInt(process.env.PORT) || process.env.NODE_ENV == 'production' ? 80 : 3000;
 
 require('dns').lookup(require('os').hostname(), function (err, add, fam) {
-    app.listen(port, host, () => {
-        console.log(`Listening at ${add} (${host}) on port ${port}`);
-    });
+    app.listen(port, host, () => parrotSay(`Listening at ${add} (${host}) on port ${port}`).then(console.log));
 });
