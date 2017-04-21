@@ -1,6 +1,5 @@
-
 export default io => {
-    io.on('connection', () => {
-        //console.log('Connection made');
-    });
+  io.on("connection", () => {
+    //console.log('Connection made');
+  });
 };

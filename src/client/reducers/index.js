@@ -1,9 +1,9 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from "redux";
 
-import tickets from './tickets';
+import tickets from "./tickets";
 
 const rootReducer = combineReducers({
-    tickets
+  tickets
 });
 
 export default rootReducer;

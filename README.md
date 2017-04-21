@@ -1,5 +1,7 @@
 # Conference Check In
 
+[![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+
 ## Quick Start
 
 _See the pre-requisites section for expected system packages_

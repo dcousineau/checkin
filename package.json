@@ -15,7 +15,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:prod": "webpack --optimize-minimize --progress --config ./webpack.config.prod.js",
     "start:prod": "sudo NODE_ENV=production node server.js",
-    "prod": "yarn run build:prod && yarn run start:prod"
+    "prod": "yarn run build:prod && yarn run start:prod",
+    "prettier": "prettier --write ./src/**/*.js ./server.js",
+    "precommit": "lint-staged",
+    "lint": "eslint ./src/**/*.js ./server.js"
   },
   "keywords": [
     "conference",
@@ -27,6 +30,8 @@
     "body-parser": "^1.15.0",
     "canvas": "^1.6.5",
     "csv": "^1.1.1",
+    "eslint-config-prettier": "^1.7.0",
+    "eslint-plugin-prettier": "^2.0.1",
     "express": "^4.13.4",
     "history": "^4.6.1",
     "isomorphic-fetch": "^2.2.1",
@@ -44,12 +49,13 @@
     "react-router-dom": "^4.1.1",
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.3.1",
-    "redux-saga": "^0.14.6",
+    "redux-saga": "^0.14.7",
     "socket.io": "^1.4.5",
     "socket.io-client": "^1.4.5"
   },
   "devDependencies": {
     "babel-core": "^6.7.4",
+    "babel-eslint": "6",
     "babel-loader": "^6.2.4",
     "babel-plugin-transform-runtime": "^6.6.0",
     "babel-polyfill": "^6.7.4",
@@ -60,8 +66,12 @@
     "babel-register": "^6.6.5",
     "bundle-loader": "^0.5.5",
     "concurrently": "^3.4.0",
+    "eslint": "^3.19.0",
+    "husky": "^0.13.3",
     "json-loader": "^0.5.4",
+    "lint-staged": "^3.4.0",
     "nodemon": "^1.11.0",
+    "prettier": "^1.2.2",
     "react-hot-loader": "next",
     "source-map-support": "^0.4.0",
     "webpack": "^2.4.1",
@@ -69,5 +79,11 @@
     "webpack-dev-server": "^2.4.2",
     "webpack-hot-middleware": "^2.10.0",
     "webpack-stats-plugin": "^0.1.5"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }

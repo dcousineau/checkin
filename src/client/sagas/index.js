@@ -1,9 +1,7 @@
-import { fork } from 'redux-saga/effects'
+import { fork } from "redux-saga/effects";
 
-import ticketsSaga from './tickets';
+import ticketsSaga from "./tickets";
 
 export default function* root() {
-    yield [
-        fork(ticketsSaga)
-    ];
+  yield [fork(ticketsSaga)];
 }
