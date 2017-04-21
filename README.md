@@ -1,6 +1,6 @@
 # Conference Check In
 
-[![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+[![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier) [![bitHound Overall Score](https://www.bithound.io/github/dcousineau/checkin/badges/score.svg)](https://www.bithound.io/github/dcousineau/checkin)
 
 ## Quick Start
 
