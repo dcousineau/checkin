@@ -67,6 +67,7 @@ export default function reducer(state = defaultState, action) {
             return {
                 ...state,
                 ticketCount: action.payload.ticketCount,
+                totalCheckedIn: action.payload.totalCheckedIn,
                 byType: action.payload.byType,
             };
         case tickets.REQUEST_STATS_FAIL:

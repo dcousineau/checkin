@@ -26,6 +26,7 @@ api.get('/stats', (req, res) => {
         will(db.count.bind(db), {}),
         will(db.find.bind(db), {}),
     ]).then(([ticketCount, allTix]) => {
+        let totalCheckedIn = 0;
         let stats = allTix
             .map(ticket => ticket)
             .reduce((stats = {}, ticket) => {
@@ -35,10 +36,11 @@ api.get('/stats', (req, res) => {
                         total: 0,
                     };
                 }
-
+                
                 stats[ticket.type].total += 1;
                 
                 if (ticket.checkedIn) {
+                    totalCheckedIn += 1;
                     stats[ticket.type].checkedIn += 1;
                 }
 
@@ -66,6 +68,7 @@ api.get('/stats', (req, res) => {
         res.json({
             ticketCount: ticketCount,
             byType: stats,
+            totalCheckedIn,
         })
     });
 });

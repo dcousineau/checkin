@@ -15,15 +15,6 @@ class Admin extends React.Component {
         type: "General Admission"
     };
 
-    shouldComponentUpdate(nextProps, nextState) {
-        return (
-            this.props.ticketCount !== nextProps.ticketCount ||
-            this.state.firstName !== nextState.firstName ||
-            this.state.lastName !== nextState.lastName ||
-            this.state.type !== nextState.type
-        );
-    }
-
     componentDidMount() {
         const {dispatch} = this.props;
         dispatch(requestStats());
@@ -76,7 +67,16 @@ class Admin extends React.Component {
                 <Card>
                     <CardTitle title="Update Tickets" subtitle="Upload CSV from ti.to" />
                     <CardText>
-                        There are <strong>{this.props.ticketCount || "NO"}</strong> tickets in the database.
+                        {this.props.ticketCount ? (
+                            <span>
+                                There are <span style={{color: Colors.green600}}>{this.props.totalCheckedIn}</span>/<strong>{this.props.ticketCount}</strong> tickets in the database.
+                            </span>
+                        ) : (
+                            <span>
+                                There are <strong>NO</strong> tickets in the database.
+                            </span>
+                        )}
+                        
                         
                         <br/><br/>
 
@@ -124,7 +124,8 @@ class Admin extends React.Component {
                     <CardTitle title="Manual Print" subtitle="Manually print a name badge" />
                     <CardText>
                         <div className="badge-preview" style={{float: "right", width: "100%", maxWidth: "400px"}}>
-                            <canvas ref={ref => this.canvas = ref} 
+                            <canvas ref={ref => this.canvas = ref}
+                                    key={"badge-preview"} 
                                     width="400" 
                                     height="200" 
                                     style={{border: "2px solid black", width: "100%"}} />
@@ -161,6 +162,7 @@ const mapStateToProps = ({tickets}) => ({
     isUploading: tickets.isUploading,
     ticketCount: tickets.ticketCount,
     ticketCountByType: tickets.byType || {},
+    totalCheckedIn: tickets.totalCheckedIn,
     ticketUploadError: tickets.ticketUploadError
 });
 
